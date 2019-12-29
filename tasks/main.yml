@@ -1,0 +1,65 @@
+---
+# ------------------------------------------------------------------------
+# tasks file for ufw
+# ------------------------------------------------------------------------
+
+- name: install ufw
+  package:
+    name: "{{ ufw_packages }}"
+    state: present
+  register: ufw_install_ufw
+  until: ufw_install_ufw is succeeded
+  retries: 3
+
+
+# ------------------------------------------------------------------------
+# configure ufw
+# ------------------------------------------------------------------------
+
+- name: reset ufw
+  ufw:
+    state: reset
+
+- name: restart ufw
+  service:
+    name: ufw
+    state: restarted
+
+- name: configure ufw defaults
+  ufw:
+    direction: "{{ item.direction }}"
+    policy: "{{ item.policy }}"
+  with_items:
+    - {direction: "incoming", policy: "{{ ufw_def_incoming }}"}
+    - {direction: "outgoing", policy: "{{ ufw_def_outgoing }}"}
+
+- name: configure ufw rules
+  ufw:
+    rule: "{{ item.rule }}"
+    direction: "{{ item.direction }}"
+    proto: "{{ item.proto }}"
+    port: "{{ item.port }}"
+  with_items:
+    - "{{ ufw_rules }}"
+
+# ------------------------------------------------------------------------
+# enable ufw
+# ------------------------------------------------------------------------
+
+# see: https://github.com/ansible/ansible/issues/45446
+- name: Configure the kernel to keep connections alive when enabling the firewall
+  sysctl:
+    name: net.netfilter.nf_conntrack_tcp_be_liberal
+    value: "1"
+    state: present
+    sysctl_set: true
+    reload: true
+
+- name: enable ufw
+  ufw:
+    state: enabled
+
+- name: restart ufw
+  service:
+    name: ufw
+    state: restarted

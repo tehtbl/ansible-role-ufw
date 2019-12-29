@@ -1,0 +1,9 @@
+---
+gid: 12345
+name: ufw
+desc: Install and configure ufw on your system.
+reqs:
+  - bootstrap
+tags:
+  - firewall
+  - ufw
