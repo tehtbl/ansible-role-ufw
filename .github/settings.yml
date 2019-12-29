@@ -1,4 +1,4 @@
 ---
 repository:
-  description: Install and configure ufw on a system.
+  description: Install and configure ufw on your system.
   homepage: https://github.com/tehtbl/ansible-role-ufw

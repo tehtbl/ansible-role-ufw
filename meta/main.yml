@@ -2,7 +2,7 @@
 galaxy_info:
   author: https://github.com/tehtbl
   role_name: ufw
-  description: Install and configure ufw on a system.
+  description: Install and configure ufw on your system.
   license: MIT License
   company: None
   min_ansible_version: 2.8
@@ -18,8 +18,8 @@ galaxy_info:
         - bionic
 
   galaxy_tags:
+    - firewall
     - ufw
-    - installer
     - client
     - server
     - system

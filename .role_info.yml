@@ -1,9 +1,9 @@
 ---
-gid: 12345
+gid: 45534
 name: ufw
 desc: Install and configure ufw on your system.
-reqs:
-  - bootstrap
+deps:
+  - tehtbl.bootstrap
 tags:
   - firewall
   - ufw

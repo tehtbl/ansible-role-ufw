@@ -1,10 +1,10 @@
 <!-- get id via: ansible-galaxy info tehtbl.ufw | grep -i "id:" -->
-<a href="https://galaxy.ansible.com/tehtbl/ufw"><img src="https://img.shields.io/ansible/role/44496"/></a> <a href="https://galaxy.ansible.com/tehtbl/ufw"><img src="https://img.shields.io/ansible/quality/44496"/></a> <a href="https://travis-ci.org/tehtbl/ansible-role-ufw"><img src="https://travis-ci.org/tehtbl/ansible-role-ufw.svg?branch=master" alt="Build status"/></a>
+<a href="https://galaxy.ansible.com/tehtbl/ufw"><img src="https://img.shields.io/ansible/role/45534"/></a> <a href="https://galaxy.ansible.com/tehtbl/ufw"><img src="https://img.shields.io/ansible/quality/45534"/></a> <a href="https://travis-ci.org/tehtbl/ansible-role-ufw"><img src="https://travis-ci.org/tehtbl/ansible-role-ufw.svg?branch=master" alt="Build status"/></a>
 
 Role Description
 ================
 
-Install and configure ufw on a system.
+Install and configure ufw on your system.
 
 Example Playbook
 ================
@@ -13,24 +13,32 @@ This example is taken from `molecule/default/playbook.yml` and is tested on each
 
 ```yaml
 ---
-# ------------------------------------------------------------------------
-# Install and configure ufw
-# ------------------------------------------------------------------------
-- name: ufw
+- name: Converge
+  hosts: all
+  become: true
+  gather_facts: false
+
+  roles:
+    - role: tehtbl.ufw
+
+```
+
+The machine you are running this on, may need to be prepared, I use this playbook to ensure everything is in place to let the role work.
+
+```yaml
+---
+- name: Prepare
   hosts: all
   become: true
   gather_facts: false
 
   roles:
     - role: tehtbl.bootstrap
-    - role: tehtbl.ufw
-      ufw_parameter: value
+
 ```
 
 Role Variables
 ==============
-
-<There are no default role variables set.>
 
 These variables are set in `defaults/main.yml`:
 
@@ -40,6 +48,15 @@ These variables are set in `defaults/main.yml`:
 # defaults file for ufw
 # ------------------------------------------------------------------------
 
+# Default Incoming Rule
+ufw_def_incoming: "deny"
+
+# Default Outgoing Rule
+ufw_def_outgoing: "allow"
+
+# Default Rules
+ufw_rules:
+  - {direction: "in", rule: "allow", port: "22", proto: "tcp"}
 
 ```
 
@@ -47,12 +64,11 @@ Requirements
 ============
 
 - Access to a repository containing packages, likely on the internet.
-- A recent version of Ansible (Tests run on the current, previous and next release of Ansible).
+- A recent version of Ansible. (Tests run on the current, previous and next release of Ansible.)
 
 The following roles can be installed to ensure all requirements are met, using `ansible-galaxy install -r requirements.yml`:
 
 ```yaml
----
 - tehtbl.bootstrap
 
 ```
@@ -135,7 +151,7 @@ vagrant up
 License
 =======
 
-GNU General Public License v3.0
+MIT License
 
 Author Information
 ==================
