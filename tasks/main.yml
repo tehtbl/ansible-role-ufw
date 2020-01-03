@@ -33,6 +33,7 @@
     - {direction: "incoming", policy: "{{ ufw_def_incoming }}"}
     - {direction: "outgoing", policy: "{{ ufw_def_outgoing }}"}
 
+# Not working in Docker tests https://github.com/moby/moby/issues/33605
 - name: configure ufw rules
   ufw:
     rule: "{{ item.rule }}"
@@ -41,6 +42,8 @@
     port: "{{ item.port }}"
   with_items:
     - "{{ ufw_rules }}"
+  when:
+    - ansible_connection != "docker"
 
 # ------------------------------------------------------------------------
 # enable ufw
@@ -54,10 +57,14 @@
     state: present
     sysctl_set: true
     reload: true
+  when:
+    - ansible_connection != "docker"
 
 - name: enable ufw
   ufw:
     state: enabled
+  when:
+    - ansible_connection != "docker"
 
 - name: restart ufw
   service:
