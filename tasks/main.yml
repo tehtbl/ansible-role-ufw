@@ -19,11 +19,15 @@
 - name: reset ufw
   ufw:
     state: reset
+  tags:
+    - molecule-idempotence-notest
 
 - name: restart ufw
   service:
     name: ufw
     state: restarted
+  tags:
+    - molecule-idempotence-notest
 
 - name: configure ufw defaults
   ufw:
@@ -70,3 +74,5 @@
   service:
     name: ufw
     state: restarted
+  tags:
+    - molecule-idempotence-notest
