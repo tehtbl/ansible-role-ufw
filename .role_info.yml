@@ -2,8 +2,7 @@
 gid: 45534
 name: ufw
 desc: Install and configure ufw on your system.
-deps:
-  - tehtbl.bootstrap
+deps: []
 tags:
   - firewall
   - ufw
